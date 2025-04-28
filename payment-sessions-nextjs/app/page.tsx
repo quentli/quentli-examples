@@ -3,7 +3,7 @@
 import { useState, FormEvent, useRef, useEffect } from "react";
 import { createPaymentSession } from "./createPaymentSession";
 
-type PaymentMethodType = "redirect" | "popup" | "iframe";
+type PaymentMethodType = "CUSTOMER_PORTAL" | "EMBEDDED" | "CUSTOM";
 
 // Function to slugify a string
 const slugify = (text: string): string => {
@@ -23,7 +23,7 @@ export default function Home() {
   const [customerName, setCustomerName] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [customerIdEdited, setCustomerIdEdited] = useState(false);
-  const [mode, setMode] = useState<PaymentMethodType>("redirect");
+  const [mode, setMode] = useState<PaymentMethodType>("CUSTOMER_PORTAL");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [paymentClosed, setPaymentClosed] = useState(false);
@@ -72,10 +72,11 @@ export default function Home() {
         amount: Number(amount),
         customerExternalId: finalCustomerId,
         customerName,
+        mode
       });
 
       if (result.success && result.url) {
-        if (mode === "popup") {
+        if (mode === "EMBEDDED") {
           // Open in popup window
           const popupWidth = 500;
           const popupHeight = 700;
@@ -102,7 +103,7 @@ export default function Home() {
           }, 500);
 
           setLoading(false);
-        } else if (mode === "iframe") {
+        } else if (mode === "CUSTOM") {
           // Show payment in iframe
           setIframeUrl(result.url);
           setShowIframe(true);
@@ -128,7 +129,8 @@ export default function Home() {
       <header className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-2">Demo de Quentli</h1>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Este ejemplo muestra cómo crear una sesión de pago y presentarle al usuario el checkout de Quentli.
+          Este ejemplo muestra cómo crear una sesión de pago y presentarle al
+          usuario el checkout de Quentli.
         </p>
       </header>
 
@@ -139,9 +141,9 @@ export default function Home() {
             <div className="flex rounded-lg p-1 bg-gray-100 dark:bg-gray-800">
               <button
                 type="button"
-                onClick={() => setMode("redirect")}
+                onClick={() => setMode("CUSTOMER_PORTAL")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "redirect"
+                  mode === "CUSTOMER_PORTAL"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
@@ -150,9 +152,9 @@ export default function Home() {
               </button>
               <button
                 type="button"
-                onClick={() => setMode("popup")}
+                onClick={() => setMode("EMBEDDED")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "popup"
+                  mode === "EMBEDDED"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
@@ -161,9 +163,9 @@ export default function Home() {
               </button>
               <button
                 type="button"
-                onClick={() => setMode("iframe")}
+                onClick={() => setMode("CUSTOM")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "iframe"
+                  mode === "CUSTOM"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
@@ -236,7 +238,7 @@ export default function Home() {
           >
             {loading ? "Creando sesión de pago..." : "Pagar con Quentli"}
 
-            {mode === "redirect" && (
+            {mode === "CUSTOMER_PORTAL" && (
               <span className="flex items-center justify-center gap-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

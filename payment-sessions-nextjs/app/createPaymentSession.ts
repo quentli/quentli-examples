@@ -9,10 +9,12 @@ export async function createPaymentSession({
   amount,
   customerExternalId,
   customerName,
+  mode,
 }: {
   amount: number;
   customerExternalId: string;
   customerName: string;
+  mode: "CUSTOMER_PORTAL" | "EMBEDDED" | "CUSTOM";
 }) {
   // Set up the payload for the Quentli API
   const now = new Date();
@@ -42,6 +44,7 @@ export async function createPaymentSession({
             currency: "MXN",
           })}`,
           expiresAt,
+          mode,
         },
       }),
     });
