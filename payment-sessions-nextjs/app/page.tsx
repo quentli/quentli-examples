@@ -128,7 +128,7 @@ export default function Home() {
       <header className="w-full max-w-md">
         <h1 className="text-2xl font-bold mb-2">Demo de Quentli</h1>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Crea una sesión de pago y redirecciona a la página de pago de Quentli
+          Este ejemplo muestra cómo crear una sesión de pago y presentarle al usuario el checkout de Quentli.
         </p>
       </header>
 
