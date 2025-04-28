@@ -38,10 +38,12 @@ Abre [http://localhost:3000](http://localhost:3000) con tu navegador para ver el
 Este proyecto utiliza variables de entorno para la configuración. Crea un archivo `.env.local` en el directorio raíz con las siguientes variables:
 
 ```
-# Configuración de la API de Quentli
+# Variables de entorno
+
 NEXT_PUBLIC_QUENTLI_API_URL=https://api.demo.quentli.com/v1
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-QUENTLI_API_KEY=tu_clave_api_aquí
+QUENTLI_API_KEY=<tu_clave_api_aquí>
+
 ```
 
 Si no se configuran, la aplicación utilizará valores predeterminados.

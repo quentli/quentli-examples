@@ -1,0 +1,74 @@
+"use server";
+
+// Environment variables with fallbacks
+const QUENTLI_API_URL =
+  process.env.NEXT_PUBLIC_QUENTLI_API_URL || "https://api.demo.quentli.com/v1";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+export async function createPaymentSession({
+  amount,
+  customerExternalId,
+  customerName,
+}: {
+  amount: number;
+  customerExternalId: string;
+  customerName: string;
+}) {
+  // Set up the payload for the Quentli API
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + 60 * 60 * 1000).toISOString(); // 1 hour from now
+
+  try {
+    const response = await fetch(`${QUENTLI_API_URL}/payment-sessions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.QUENTLI_API_KEY}`,
+        "User-Agent": "Quentli-NextJS-Demo",
+      },
+      body: JSON.stringify({
+        input: {
+          returnUrl: `${APP_URL}/resultado?outcome=SUCCESS`,
+          cancelUrl: `${APP_URL}/resultado?outcome=DECLINED`,
+          customer: {
+            name: customerName,
+            externalId: customerExternalId,
+          },
+          amount: amount * 100, // Convert to cents
+          currency: "MXN",
+          description: "Pago de Mensualidad",
+          expiresAt,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Error al crear la sesión de pago");
+      console.log(`Status: ${response.status}`);
+      console.log(`Status Text: ${response.statusText}`);
+
+      // Check if the response is JSON before parsing
+      const contentType = response.headers.get("content-type");
+      const isJson = contentType?.includes("application/json");
+
+      if (isJson) {
+        const errorData = await response.json();
+        throw new Error(
+          `Error al crear la sesión de pago: ${JSON.stringify(errorData)}`
+        );
+      }
+      throw new Error(
+        `Error al crear la sesión de pago: ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return { success: true, url: data.url };
+  } catch (error) {
+    console.error("Error creando sesión de pago:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Error desconocido",
+    };
+  }
+}
