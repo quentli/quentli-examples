@@ -44,6 +44,7 @@ export default function Home() {
       if (event.data && event.data.type === "PAYMENT_COMPLETED") {
         // Hide iframe and redirect based on payment status
         setShowIframe(false);
+        setPaymentClosed(true);
         if (
           event.data.status === "SUCCESS" ||
           event.data.status === "DECLINED"
@@ -55,21 +56,6 @@ export default function Home() {
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, []);
-
-  // Check if popup is closed
-  useEffect(() => {
-    if (popupWindowRef.current) {
-      const checkPopupInterval = setInterval(() => {
-        if (popupWindowRef.current && popupWindowRef.current.closed) {
-          clearInterval(checkPopupInterval);
-          setPaymentClosed(true);
-          popupWindowRef.current = null;
-        }
-      }, 500);
-
-      return () => clearInterval(checkPopupInterval);
-    }
   }, []);
 
   async function handleSubmit(e: FormEvent) {
@@ -102,6 +88,19 @@ export default function Home() {
             `width=${popupWidth},height=${popupHeight},top=${top},left=${left}`
           );
 
+          const checkPopupInterval = setInterval(() => {
+            console.log("checkPopupInterval", checkPopupInterval);
+            if (popupWindowRef.current && popupWindowRef.current.closed) {
+              console.log(
+                "popupWindowRef.current.closed",
+                popupWindowRef.current.closed
+              );
+              clearInterval(checkPopupInterval);
+              setPaymentClosed(true);
+              popupWindowRef.current = null;
+            }
+          }, 500);
+
           setLoading(false);
         } else if (mode === "iframe") {
           // Show payment in iframe
@@ -127,9 +126,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-10 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-2">
-          Demostración de Pago con Quentli
-        </h1>
+        <h1 className="text-2xl font-bold mb-2">Demo de Quentli</h1>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Crea una sesión de pago y redirecciona a la página de pago de Quentli
         </p>
@@ -262,10 +259,8 @@ export default function Home() {
           </button>
 
           {paymentClosed && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 p-3 rounded text-sm mt-3">
-              Has cerrado la ventana de pago. Si completaste el pago, la
-              confirmación puede tardar unos momentos. De lo contrario, puedes
-              intentar nuevamente.
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 p-3 rounded text-sm mt-3 border border-yellow-300 dark:border-yellow-700">
+              La sesión de pago ha sido cancelada.
             </div>
           )}
         </form>

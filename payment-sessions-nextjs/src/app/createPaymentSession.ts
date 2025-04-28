@@ -33,6 +33,7 @@ export async function createPaymentSession({
           customer: {
             name: customerName,
             externalId: customerExternalId,
+            email: `${customerExternalId}@example.com`,
           },
           amount: amount * 100, // Convert to cents
           currency: "MXN",
