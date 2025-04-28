@@ -1,34 +1,11 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export default function ResultadoPage() {
-  const searchParams = useSearchParams();
-  const outcome = searchParams.get("outcome");
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-
-    // Send message to parent window if in iframe
-    if (outcome === "SUCCESS" || outcome === "DECLINED") {
-      // Check if we're in an iframe
-      if (window.self !== window.top) {
-        // Send message to parent window
-        window.parent.postMessage({
-          type: 'PAYMENT_COMPLETED',
-          status: outcome
-        }, '*');
-      }
-    }
-  }, [outcome]);
-
-  // Only render content when we're on the client to avoid hydration mismatch
-  if (!isClient) {
-    return null;
-  }
+export default async function ResultadoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ outcome?: string }>;
+}) {
+  const outcome = (await searchParams).outcome || null;
 
   const isSuccess = outcome === "SUCCESS";
   const isPopupClosed = outcome === "POPUP_CLOSED";
@@ -117,10 +94,10 @@ export default function ResultadoPage() {
                 : "text-red-700 dark:text-red-400"
             }`}
           >
-            {isSuccess 
-              ? "¡Pago exitoso!" 
-              : isPopupClosed 
-              ? "Ventana de pago cerrada" 
+            {isSuccess
+              ? "¡Pago exitoso!"
+              : isPopupClosed
+              ? "Ventana de pago cerrada"
               : "Pago cancelado"}
           </h2>
 
