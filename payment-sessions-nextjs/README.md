@@ -2,13 +2,14 @@
 
 Este proyecto es una demostración de cómo implementar sesiones de pago utilizando la API de Quentli en una aplicación Next.js. La aplicación permite a los usuarios crear sesiones de pago y redireccionar al usuario a la página de pago de Quentli.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquentli%2Fquentli-examples&project-name=quentli-payment-sessions-nextjs&repository-name=quentli-payment-sessions-nextjs&root-directory=payment-sessions-nextjs)
+
 ## Características
 
 - Formulario simple para capturar datos del cliente y monto del pago
 - Creación de sesión de pago en el servidor usando Server Actions de Next.js
 - Redirección a la página de pago de Quentli
 - Página de resultados para mostrar el estado del pago (exitoso o rechazado)
-- Soporte para tema claro y oscuro
 
 ## Tecnologías Utilizadas
 
@@ -47,14 +48,6 @@ QUENTLI_API_KEY=<tu_clave_api_aquí>
 ```
 
 Si no se configuran, la aplicación utilizará valores predeterminados.
-
-## Flujo de Pago
-
-1. El usuario ingresa el monto, ID externo y nombre del cliente
-2. El servidor crea una sesión de pago con la API de Quentli
-3. El usuario es redirigido a la página de pago de Quentli
-4. Después del proceso de pago, Quentli redirige al usuario de vuelta a la aplicación
-5. La aplicación muestra un mensaje de éxito o rechazo dependiendo del resultado
 
 ## Más Información
 
