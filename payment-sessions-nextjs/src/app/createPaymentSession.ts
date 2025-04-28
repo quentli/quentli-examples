@@ -35,9 +35,12 @@ export async function createPaymentSession({
             externalId: customerExternalId,
             email: `${customerExternalId}@example.com`,
           },
-          amount: amount * 100, // Convert to cents
+          amount: amount * 100, // Convert to minimum unit of currency
           currency: "MXN",
-          description: "Pago de Mensualidad",
+          description: `Pago por ${amount.toLocaleString("es-MX", {
+            style: "currency",
+            currency: "MXN",
+          })}`,
           expiresAt,
         },
       }),

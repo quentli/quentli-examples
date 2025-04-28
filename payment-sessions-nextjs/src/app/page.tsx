@@ -84,7 +84,7 @@ export default function Home() {
 
           popupWindowRef.current = window.open(
             result.url,
-            "QuentliPayment",
+            "quentli_payment_session",
             `width=${popupWidth},height=${popupHeight},top=${top},left=${left}`
           );
 
