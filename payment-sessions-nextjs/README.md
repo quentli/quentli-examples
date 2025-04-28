@@ -2,7 +2,7 @@
 
 Este proyecto es una demostración de cómo implementar sesiones de pago utilizando la API de Quentli en una aplicación Next.js. La aplicación permite a los usuarios crear sesiones de pago y redireccionar al usuario a la página de pago de Quentli.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquentli%2Fquentli-examples&project-name=quentli-payment-sessions-nextjs&repository-name=quentli-payment-sessions-nextjs&root-directory=payment-sessions-nextjs)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquentli%2Fquentli-examples%2Ftree%2Fmain%2Fpayment-sessions-nextjs&env=QUENTLI_API_KEY&project-name=quentli-payment-sessions&demo-title=Demo%20de%20Quentli&demo-description=Demostraci%C3%B3n%20de%20c%C3%B3mo%20implementar%20sesiones%20de%20pago%20utilizando%20la%20API%20de%20Quentli&demo-url=https%3A%2F%2Fquentli-example-payment-sessions-nextjs.vercel.app%2F)
 
 ## Características
 
