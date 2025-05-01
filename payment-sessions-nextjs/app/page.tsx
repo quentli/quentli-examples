@@ -23,10 +23,10 @@ export default function Home() {
   const [customerName, setCustomerName] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [customerIdEdited, setCustomerIdEdited] = useState(false);
-  const [mode, setMode] = useState<PaymentMethodType>("CUSTOMER_PORTAL");
+  const [displayMode, setDisplayMode] = useState<PaymentMethodType>("CUSTOMER_PORTAL");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [paymentClosed, setPaymentClosed] = useState(false);
+  const [popupClosed, setPopupClosed] = useState(false);
   const popupWindowRef = useRef<Window | null>(null);
   const [showIframe, setShowIframe] = useState(false);
   const [iframeUrl, setIframeUrl] = useState("");
@@ -44,7 +44,7 @@ export default function Home() {
       if (event.data && event.data.type === "PAYMENT_COMPLETED") {
         // Hide iframe and redirect based on payment status
         setShowIframe(false);
-        setPaymentClosed(true);
+        setPopupClosed(true);
         if (
           event.data.status === "SUCCESS" ||
           event.data.status === "DECLINED"
@@ -62,7 +62,7 @@ export default function Home() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setPaymentClosed(false);
+    setPopupClosed(false);
 
     try {
       // If customerId is still empty, derive it from the name
@@ -72,11 +72,11 @@ export default function Home() {
         amount: Number(amount),
         customerExternalId: finalCustomerId,
         customerName,
-        mode
+        displayMode: displayMode
       });
 
       if (result.success && result.url) {
-        if (mode === "EMBEDDED") {
+        if (displayMode === "EMBEDDED") {
           // Open in popup window
           const popupWidth = 500;
           const popupHeight = 700;
@@ -90,20 +90,15 @@ export default function Home() {
           );
 
           const checkPopupInterval = setInterval(() => {
-            console.log("checkPopupInterval", checkPopupInterval);
             if (popupWindowRef.current && popupWindowRef.current.closed) {
-              console.log(
-                "popupWindowRef.current.closed",
-                popupWindowRef.current.closed
-              );
               clearInterval(checkPopupInterval);
-              setPaymentClosed(true);
+              setPopupClosed(true);
               popupWindowRef.current = null;
             }
           }, 500);
 
           setLoading(false);
-        } else if (mode === "CUSTOM") {
+        } else if (displayMode === "CUSTOM") {
           // Show payment in iframe
           setIframeUrl(result.url);
           setShowIframe(true);
@@ -141,9 +136,9 @@ export default function Home() {
             <div className="flex rounded-lg p-1 bg-gray-100 dark:bg-gray-800">
               <button
                 type="button"
-                onClick={() => setMode("CUSTOMER_PORTAL")}
+                onClick={() => setDisplayMode("CUSTOMER_PORTAL")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "CUSTOMER_PORTAL"
+                  displayMode === "CUSTOMER_PORTAL"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
@@ -152,26 +147,27 @@ export default function Home() {
               </button>
               <button
                 type="button"
-                onClick={() => setMode("EMBEDDED")}
+                onClick={() => setDisplayMode("EMBEDDED")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "EMBEDDED"
+                  displayMode === "EMBEDDED"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
               >
                 Popup
               </button>
-              <button
+              {/* Iframe is commented as currently third-party cookies are blocked in most browsers */}
+              {/* <button
                 type="button"
-                onClick={() => setMode("CUSTOM")}
+                onClick={() => setDisplayMode("CUSTOM")}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
-                  mode === "CUSTOM"
+                  displayMode === "CUSTOM"
                     ? "bg-primary text-background shadow-sm"
                     : "bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700"
                 }`}
               >
                 Iframe
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -238,7 +234,7 @@ export default function Home() {
           >
             {loading ? "Creando sesión de pago..." : "Pagar con Quentli"}
 
-            {mode === "CUSTOMER_PORTAL" && (
+            {displayMode === "CUSTOMER_PORTAL" && (
               <span className="flex items-center justify-center gap-1.5">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -260,7 +256,7 @@ export default function Home() {
             )}
           </button>
 
-          {paymentClosed && (
+          {popupClosed && (
             <div className="bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 p-3 rounded text-sm mt-3 border border-yellow-300 dark:border-yellow-700">
               La sesión de pago ha sido cancelada.
             </div>
@@ -277,7 +273,7 @@ export default function Home() {
               <button
                 onClick={() => {
                   setShowIframe(false);
-                  setPaymentClosed(true);
+                  setPopupClosed(true);
                 }}
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 aria-label="Cerrar"

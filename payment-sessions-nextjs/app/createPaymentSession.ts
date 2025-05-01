@@ -9,12 +9,12 @@ export async function createPaymentSession({
   amount,
   customerExternalId,
   customerName,
-  mode,
+  displayMode,
 }: {
   amount: number;
   customerExternalId: string;
   customerName: string;
-  mode: "CUSTOMER_PORTAL" | "EMBEDDED" | "CUSTOM";
+  displayMode: "CUSTOMER_PORTAL" | "EMBEDDED" | "CUSTOM";
 }) {
   // Set up the payload for the Quentli API
   const now = new Date();
@@ -30,8 +30,8 @@ export async function createPaymentSession({
       },
       body: JSON.stringify({
         input: {
-          returnUrl: `${APP_URL}/resultado?outcome=SUCCESS`,
-          cancelUrl: `${APP_URL}/resultado?outcome=DECLINED`,
+          returnUrl: displayMode === "CUSTOMER_PORTAL" ? `${APP_URL}/resultado?outcome=SUCCESS` : undefined,
+          cancelUrl: displayMode === "CUSTOMER_PORTAL" ? `${APP_URL}/resultado?outcome=DECLINED` : undefined,
           customer: {
             name: customerName,
             externalId: customerExternalId,
@@ -44,7 +44,7 @@ export async function createPaymentSession({
             currency: "MXN",
           })}`,
           expiresAt,
-          mode,
+          displayMode,
         },
       }),
     });
