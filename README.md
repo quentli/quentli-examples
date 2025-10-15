@@ -4,7 +4,7 @@ Este repositorio contiene ejemplos de integración con la API de Quentli para di
 
 ## Ejemplos Disponibles
 
-- [**payment-sessions-nextjs**](./payment-sessions-nextjs): Implementación de sesiones de pago con Next.js, demostrando la creación de sesiones de pago y redirección a la página de pago de Quentli.
+- [**payment-sessions-nextjs**](./examples/payment-sessions-nextjs): Implementación de sesiones de pago con Next.js, demostrando la creación de sesiones de pago y redirección a la página de pago de Quentli.
 
 ## Sobre Quentli
 
