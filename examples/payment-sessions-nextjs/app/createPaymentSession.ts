@@ -70,7 +70,23 @@ export async function createPaymentSession({
     }
 
     const data = await response.json();
-    return { success: true, url: data.url };
+    return { 
+      success: true,
+      url: data.url,
+      session: {
+        accessToken: data.session.accessToken,
+        csrfToken: data.session.csrfToken,
+        expiresAt: data.session.expiresAt,
+      },
+      paymentSession: {
+        ...data.paymentSession,
+        customer: data.paymentSession.customer || {},
+        metadata: data.paymentSession.metadata?.map((m: { key: { name: string }; value: string }) => ({ 
+          key: m.key.name, 
+          value: m.value 
+        })) || [],
+      },
+    };
   } catch (error) {
     console.error("Error creando sesión de pago:", error);
     return {
