@@ -393,7 +393,7 @@ export default function WithQuentliJS() {
         )}
         <div
           id="embedded-checkout"
-          className={`relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full h-[600px]  flex-col border border-gray-200 dark:border-gray-700 ${
+          className={`relative bg-white dark:bg-gray-800 shadow-xl w-full h-[600px]  flex-col border border-gray-200 dark:border-gray-700 ${
             showEmbeddedCheckout ? "flex" : "hidden"
           }`}
           ref={iframeContainerRef}

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@quentli/js':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: file:../../../quentli-js
+        version: file:../../../quentli-js
       next:
         specifier: 15.3.1
         version: 15.3.1(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -337,8 +337,8 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@quentli/js@0.2.0':
-    resolution: {integrity: sha512-FzXer+2aM11teTU3slCQ7XcX6OWQJwR19YxucW5ONSvAHvWF/gz9mQj/4PsQya/sl5k0QXalYX6SbDgnMyQEaQ==}
+  '@quentli/js@file:../../../quentli-js':
+    resolution: {directory: ../../../quentli-js, type: directory}
 
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
@@ -2040,7 +2040,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@quentli/js@0.2.0': {}
+  '@quentli/js@file:../../../quentli-js': {}
 
   '@rtsao/scc@1.1.0': {}
 
