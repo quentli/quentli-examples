@@ -328,7 +328,7 @@ export default function Home() {
 
           <button
             type="submit"
-            disabled={loading || !!paymentStatus}
+            disabled={loading || paymentStatus === "COMPLETE"}
             className={`rounded-full mt-2 border border-solid border-transparent transition-colors flex items-center justify-center gap-2 font-medium h-12 px-5 disabled:cursor-not-allowed ${paymentStatus === "COMPLETE"
               ? "bg-green-600 dark:bg-green-700 text-white"
               : "bg-primary text-background hover:bg-primary/80 dark:hover:bg-[#ccc] disabled:opacity-50"
@@ -433,7 +433,7 @@ export default function Home() {
             </div>
           )}
 
-          {paymentStatus && (
+          {paymentStatus === "COMPLETE" && (
             <button
               type="button"
               onClick={resetDemo}

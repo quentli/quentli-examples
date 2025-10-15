@@ -159,6 +159,8 @@ export default function WithQuentliJS() {
     }
   }
 
+  const demoFinished = paymentStatus === "COMPLETE";
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-10 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <header className="w-full max-w-md">
@@ -179,7 +181,7 @@ export default function WithQuentliJS() {
               <button
                 type="button"
                 onClick={() => setDisplayMode("CUSTOMER_PORTAL")}
-                disabled={!!paymentStatus}
+                disabled={demoFinished}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
                   displayMode === "CUSTOMER_PORTAL"
                     ? "bg-primary text-background shadow-sm"
@@ -191,7 +193,7 @@ export default function WithQuentliJS() {
               <button
                 type="button"
                 onClick={() => setDisplayMode("EMBEDDED")}
-                disabled={!!paymentStatus}
+                disabled={demoFinished}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
                   displayMode === "EMBEDDED"
                     ? "bg-primary text-background shadow-sm"
@@ -203,7 +205,7 @@ export default function WithQuentliJS() {
               <button
                 type="button"
                 onClick={() => setDisplayMode("CUSTOM")}
-                disabled={!!paymentStatus}
+                disabled={demoFinished}
                 className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-all duration-200 ${
                   displayMode === "CUSTOM"
                     ? "bg-primary text-background shadow-sm"
@@ -226,7 +228,7 @@ export default function WithQuentliJS() {
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              disabled={!!paymentStatus}
+              disabled={demoFinished}
               className="rounded border border-gray-300 dark:border-gray-700 px-3 py-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="$0.00"
               required
@@ -242,7 +244,7 @@ export default function WithQuentliJS() {
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              disabled={!!paymentStatus}
+              disabled={demoFinished}
               className="rounded border border-gray-300 dark:border-gray-700 px-3 py-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="ej. Alicia Ríos"
               required
@@ -261,48 +263,46 @@ export default function WithQuentliJS() {
                 setCustomerId(e.target.value);
                 setCustomerIdEdited(true);
               }}
-              disabled={!!paymentStatus}
+              disabled={demoFinished}
               className="rounded border border-gray-300 dark:border-gray-700 px-3 py-2 bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="ej. 12345"
               required
             />
           </div>
 
-          {paymentStatus !== "COMPLETE" && (
-            <button
-              type="submit"
-              disabled={loading || !!paymentStatus}
-              className={`rounded-full mt-2 border border-solid border-transparent transition-colors flex items-center justify-center gap-2 font-medium h-12 px-5 disabled:cursor-not-allowed bg-primary text-background hover:bg-primary/80 dark:hover:bg-[#ccc] disabled:opacity-50`}
-            >
-              {loading ? (
-                "Creando sesión de pago..."
-              ) : (
-                <>
-                  Pagar con Quentli
-                  {displayMode === "CUSTOMER_PORTAL" && !paymentStatus && (
-                    <span className="flex items-center justify-center gap-1.5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="inline-block"
-                      >
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                      </svg>
-                    </span>
-                  )}
-                </>
-              )}
-            </button>
-          )}
+          <button
+            type="submit"
+            disabled={loading || demoFinished || iframeLoading}
+            className={`rounded-full mt-2 border border-solid border-transparent transition-colors flex items-center justify-center gap-2 font-medium h-12 px-5 disabled:cursor-not-allowed bg-primary text-background hover:bg-primary/80 dark:hover:bg-[#ccc] disabled:opacity-50`}
+          >
+            {loading ? (
+              "Creando sesión de pago..."
+            ) : (
+              <>
+                Pagar con Quentli
+                {displayMode === "CUSTOMER_PORTAL" && (
+                  <span className="flex items-center justify-center gap-1.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="inline-block"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                  </span>
+                )}
+              </>
+            )}
+          </button>
 
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-4 rounded text-sm mt-3 border border-red-300 dark:border-red-700">
@@ -361,7 +361,7 @@ export default function WithQuentliJS() {
             </div>
           )}
 
-          {paymentStatus && (
+          {demoFinished && (
             <button
               type="button"
               onClick={resetDemo}
