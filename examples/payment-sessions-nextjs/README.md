@@ -26,7 +26,6 @@ Este proyecto incluye dos implementaciones:
   - **Iframe**: Embebe el checkout directamente en tu página
 - Formulario simple para capturar datos del cliente y monto del pago
 - Creación de sesión de pago en el servidor usando Server Actions de Next.js
-- Comunicación segura usando MessageChannel API
 - Manejo de estados de pago (exitoso, rechazado, cancelado)
 
 ## Tecnologías Utilizadas
@@ -36,7 +35,6 @@ Este proyecto incluye dos implementaciones:
 - [`@quentli/js`](https://www.npmjs.com/package/@quentli/js) - SDK oficial de Quentli (en `/`)
 - Server Actions de Next.js para operaciones del lado del servidor
 - Tailwind CSS para estilos
-- MessageChannel API para comunicación segura
 
 ## Primeros Pasos
 
